@@ -1,0 +1,145 @@
+@use "./variables.scss" as *;
+
+// Pure Wiki presentation: article-first, restrained, and highly readable.
+
+:root {
+  --wiki-border: #a2a9b1;
+  --wiki-soft-border: #c8ccd1;
+  --wiki-panel: #f8f9fa;
+}
+
+[saved-theme="dark"] {
+  --wiki-border: #72777d;
+  --wiki-soft-border: #54595d;
+  --wiki-panel: #20262d;
+}
+
+body {
+  font-feature-settings: "kern" 1;
+  letter-spacing: -0.01em;
+}
+
+.page > #quartz-body {
+  column-gap: 2rem;
+}
+
+.center > article {
+  max-width: 54rem;
+}
+
+article {
+  font-size: 1rem;
+  line-height: 1.75;
+}
+
+article h1,
+article h2 {
+  font-weight: 600;
+  letter-spacing: -0.025em;
+  border-bottom: 1px solid var(--wiki-border);
+  padding-bottom: 0.25rem;
+}
+
+article h1 {
+  font-size: 2rem;
+  margin-top: 0.5rem;
+}
+
+article h2 {
+  font-size: 1.45rem;
+  margin-top: 2rem;
+}
+
+article h3 {
+  font-size: 1.15rem;
+  margin-top: 1.5rem;
+}
+
+article a.internal,
+article a.external {
+  text-decoration: none;
+}
+
+article a.internal:hover,
+article a.external:hover {
+  text-decoration: underline;
+}
+
+article a.internal.broken {
+  color: #ba0000;
+  text-decoration: none;
+}
+
+article a.internal.broken:visited {
+  color: #a55858;
+}
+
+article a.internal.broken:hover {
+  color: #d73333;
+  text-decoration: underline;
+  text-decoration-style: dotted;
+}
+
+article table {
+  width: auto;
+  min-width: 60%;
+  border-collapse: collapse;
+  font-size: 0.95rem;
+}
+
+article th,
+article td {
+  border: 1px solid var(--wiki-border);
+  padding: 0.45rem 0.65rem;
+}
+
+article th {
+  background: var(--wiki-panel);
+  font-weight: 600;
+}
+
+article blockquote {
+  border-left: 3px solid var(--wiki-border);
+  margin-left: 0;
+  padding-left: 1rem;
+}
+
+article pre,
+article code {
+  border-radius: 2px;
+}
+
+.sidebar {
+  font-size: 0.92rem;
+}
+
+.sidebar.left {
+  border-right: 1px solid var(--wiki-soft-border);
+  padding-right: 1rem;
+}
+
+.sidebar.right {
+  border-left: 1px solid var(--wiki-soft-border);
+  padding-left: 1rem;
+}
+
+.breadcrumbs,
+.content-meta {
+  font-size: 0.85rem;
+}
+
+.callout {
+  border-radius: 2px;
+}
+
+@media all and ($mobile) {
+  .sidebar.left,
+  .sidebar.right {
+    border: 0;
+    padding: 0;
+  }
+
+  article {
+    line-height: 1.68;
+  }
+}
