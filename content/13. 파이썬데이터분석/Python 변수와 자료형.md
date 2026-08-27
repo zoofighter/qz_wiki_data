@@ -1,0 +1,159 @@
+---
+title: Python 변수와 자료형
+aliases:
+  - 파이썬 변수와 자료형
+subject: 파이썬데이터분석
+type: concept
+level: basic
+status: growing
+tags:
+  - Python
+  - 자료형
+created: 2026-08-27
+updated: 2026-08-27
+publish: true
+draft: false
+---
+
+# Python 변수와 자료형
+
+> [!summary] 한눈에 보기
+> 변수는 값을 참조하는 이름이고 자료형은 값에 적용할 수 있는 연산을 결정한다. 데이터 분석에서는 숫자, 문자열, 불리언, 결측값과 날짜를 올바르게 구분해야 계산 오류를 줄일 수 있다.
+
+## 왜 배우는가
+
+CSV에서 읽은 숫자가 문자열로 저장되면 평균을 계산할 수 없다. 날짜를 단순 문자열로 두면 시간 간격 계산과 정렬이 잘못될 수 있다. 데이터의 의미와 자료형을 일치시키는 것이 분석의 출발점이다.
+
+## 기본 자료형
+
+| 자료형 | 의미 | 예시 |
+|---|---|---|
+| `int` | 정수 | `10`, `-3` |
+| `float` | 실수 | `3.14`, `0.05` |
+| `str` | 문자열 | `"Seoul"` |
+| `bool` | 참과 거짓 | `True`, `False` |
+| `NoneType` | 값이 없음을 표현 | `None` |
+
+## 변수 만들기
+
+```python
+customer_count = 120
+average_amount = 35_500.5
+region = "Seoul"
+is_active = True
+missing_value = None
+
+print(type(customer_count))
+print(type(average_amount))
+print(type(region))
+print(type(is_active))
+print(type(missing_value))
+```
+
+`type()`은 값의 자료형을 확인한다. 변수 이름은 값의 의미를 드러내도록 작성하고, 단위가 중요하면 `amount_won`, `duration_minutes`처럼 이름에 포함할 수 있다.
+
+## 산술 연산
+
+```python
+price = 12_000
+quantity = 3
+
+total = price * quantity
+discounted_total = total * (1 - 0.1)
+
+print(total)
+print(discounted_total)
+```
+
+할인 전 금액은 $12{,}000\times3=36{,}000$원이고, 할인율이 $10\%$이면 할인 후 금액은 $36{,}000\times0.9=32{,}400$원이다.
+
+## 형 변환
+
+```python
+amount_text = "15000"
+amount = int(amount_text)
+tax_rate = float("0.1")
+
+print(amount * (1 + tax_rate))
+```
+
+문자열이 숫자 형식일 때 `int()`나 `float()`로 변환할 수 있다. `"15,000"`, `"10%"`, 빈 문자열처럼 기호가 포함된 값은 바로 변환되지 않으므로 먼저 정제해야 한다.
+
+## 비교와 불리언
+
+```python
+amount = 120_000
+threshold = 100_000
+
+is_large_transaction = amount >= threshold
+print(is_large_transaction)
+```
+
+비교식은 `True` 또는 `False`를 만든다. 이후 [[Python 조건문]]이나 데이터 필터링에 사용한다.
+
+## 부동소수점 주의
+
+컴퓨터는 일부 소수를 이진수로 정확히 표현하지 못한다.
+
+```python
+result = 0.1 + 0.2
+print(result)
+print(result == 0.3)
+```
+
+따라서 실수 계산 결과를 `==`로 직접 비교하기보다 허용 오차를 사용한다.
+
+```python
+import math
+
+print(math.isclose(0.1 + 0.2, 0.3))
+```
+
+화폐처럼 정확한 십진 계산이 중요한 상황에서는 문제 목적에 따라 정수 단위나 `decimal.Decimal` 사용을 검토한다.
+
+## 데이터 분석에서의 결측값
+
+Python 자체의 `None` 외에도 NumPy와 pandas에서는 `NaN`이나 전용 결측 표현을 사용할 수 있다. 결측값은 숫자 $0$과 의미가 다르다.
+
+```python
+import pandas as pd
+
+amounts = pd.Series([1000, None, 3000], dtype="Float64")
+
+print(amounts.isna())
+print(amounts.mean())
+```
+
+`isna()`는 결측 위치를 확인한다. 평균 계산 시 결측값 처리 방식은 사용하는 함수와 옵션을 확인해야 한다.
+
+## 자주 하는 실수
+
+- 숫자 문자열을 숫자로 생각하고 산술 연산을 시도한다.
+- `=`와 `==`를 혼동한다.
+- 결측값을 무조건 $0$으로 바꾼다.
+- 금액과 비율처럼 단위가 다른 변수를 직접 더한다.
+- 부동소수점 값을 완전 일치 비교한다.
+
+## 관련 개념
+
+- [[Python 리스트와 튜플]]
+- [[Python 조건문]]
+- [[pandas Series]]
+- [[데이터의 척도]]
+- [[파이썬데이터분석 목차]]
+
+## 연습문제
+
+다음 코드에서 `monthly_fee`가 문자열이면 어떤 문제가 발생하는가? 올바른 계산 코드도 작성하라.
+
+```python
+monthly_fee = "25000"
+months = 6
+total_fee = monthly_fee * months
+```
+
+## 정답과 해설
+
+> [!check]- 정답
+> 문자열에 정수를 곱하면 문자열이 반복되므로 금액 합계가 계산되지 않는다. `total_fee = int(monthly_fee) * months`로 변환하면 $150{,}000$을 계산할 수 있다.
+

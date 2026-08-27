@@ -57,10 +57,12 @@ async function copyPublishedNotes() {
     publishedNotes.push({ ...file, markdown })
 
     for (const match of markdown.matchAll(/!\[\[([^\]|#]+)(?:[|#][^\]]*)?\]\]/g)) {
-      referencedAssets.add(path.basename(match[1]))
+      referencedAssets.add(path.basename(match[1]).normalize("NFC"))
     }
     for (const match of markdown.matchAll(/!\[[^\]]*\]\((?!https?:\/\/)([^)]+)\)/g)) {
-      referencedAssets.add(path.basename(decodeURIComponent(match[1].split("#")[0])))
+      referencedAssets.add(
+        path.basename(decodeURIComponent(match[1].split("#")[0])).normalize("NFC"),
+      )
     }
   }
 
@@ -75,7 +77,7 @@ async function copyPublishedNotes() {
 
   let copiedAssets = 0
   for (const file of assetFiles) {
-    if (!referencedAssets.has(path.basename(file.relativePath))) continue
+    if (!referencedAssets.has(path.basename(file.relativePath).normalize("NFC"))) continue
     const destination = path.join(contentRoot, file.relativePath)
     await fs.mkdir(path.dirname(destination), { recursive: true })
     await fs.copyFile(file.absolutePath, destination)
